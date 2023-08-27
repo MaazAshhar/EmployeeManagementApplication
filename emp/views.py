@@ -90,11 +90,17 @@ def add_feedback(request):
 
 
 def view_feedback(request):
+    bool=False
     if request.method=="POST":
         f=FeedbackForm(request.POST)
         if f.is_valid():
             new_feedback=f.save()
+            bool=True
         feedbacks=Feedback.objects.all()
-        return render(request,"emp/view_feedback.html",{'feedbacks':feedbacks})
+        data={'bool':bool,'feedbacks':feedbacks}
+        return render(request,"emp/view_feedback.html",data)
     feedbacks=Feedback.objects.all()
-    return render(request,"emp/view_feedback.html",{'feedbacks':feedbacks})
+    if(len(feedbacks)!=0):
+        bool=True
+    data={'bool':bool,'feedbacks':feedbacks}
+    return render(request,"emp/view_feedback.html",data)
